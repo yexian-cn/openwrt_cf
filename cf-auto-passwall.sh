@@ -50,7 +50,19 @@ echo 数据中心 $colo
 echo 总计用时 $((end_seconds-start_seconds)) 秒
 uci set passwall.xxxxxxxxxx.address=$anycast
 uci commit passwall
-curl -s -o /dev/null --data "token=你的id&title=$anycast更新成功！&content= 优选IP $anycast 满足 $bandwidth Mbps带宽需求<br>峰值速度 $max kB/s<br>实测带宽 $realbandwidth Mbps<br>数据中心 $colo<br>当前程序版本 $app <br>总计用时 $((end_seconds-start_seconds)) 秒<br>&template=html" http://pushplus.hxtrip.com/send
+curl	-s -0 /dev/null	http://www.pushplus.plus/send  \
+	-H 'Content-Type: application/json' \
+	-d '{  
+			"token": "TOKEN",  
+			"title": "'"$anycast更新成功"'",  
+			"content": "'"优选IP $anycast 满足 $bandwidth Mbps带宽需求
+						峰值速度 $max kB/s
+						实测带宽 $realbandwidth Mbps
+						数据中心 $colo
+						当前程序版本 $app 
+						总计用时 $((end_seconds-start_seconds)) 秒"'"
+		  }' \
+	--header "Content-Type: application/json"
 sleep 1
 /etc/init.d/haproxy start
 /etc/init.d/passwall start
