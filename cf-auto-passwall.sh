@@ -32,7 +32,7 @@ endtime=$(date +'%Y-%m-%d %H:%M:%S')
 start_seconds=$(date --date="$starttime" +%s)
 end_seconds=$(date --date="$endtime" +%s)
 clear
-curl --$ips --resolve service.anycast.eu.org:443:$anycast --retry 3 -s -X POST https://service.anycast.eu.org -o temp.txt
+curl --$ips --resolve service.baipiao.eu.org:443:$anycast --retry 3 -s -X POST https://service.baipiao.eu.org -o temp.txt
 publicip=$(grep publicip= temp.txt | cut -f 2- -d'=')
 colo=$(grep colo= temp.txt | cut -f 2- -d'=')
 rm -rf temp.txt
@@ -173,7 +173,7 @@ do
 						city=$(grep city: meta.txt | awk -F: '{print $2}')
 						latitude=$(grep latitude: meta.txt | awk -F: '{print $2}')
 						longitude=$(grep longitude: meta.txt | awk -F: '{print $2}')
-						curl --$ips --retry 3 https://service.anycast.eu.org -o data.txt -#
+						curl --$ips --retry 3 https://service.baipiao.eu.org -o data.txt -#
 						break
 					fi
 				done
@@ -191,7 +191,7 @@ do
 						city=$(grep city: meta.txt | awk -F: '{print $2}')
 						latitude=$(grep latitude: meta.txt | awk -F: '{print $2}')
 						longitude=$(grep longitude: meta.txt | awk -F: '{print $2}')
-						curl --$ips --resolve service.anycast.eu.org:443:$resolveip --retry 3 https://service.anycast.eu.org -o data.txt -#
+						curl --$ips --resolve service.baipiao.eu.org:443:$resolveip --retry 3 https://service.baipiao.eu.org -o data.txt -#
 						break
 					fi
 				done
@@ -332,7 +332,7 @@ done
 
 function singletest (){
 read -p "请输入需要测速的IP: " testip
-curl --resolve service.anycast.eu.org:443:$testip https://service.anycast.eu.org -o temp.txt -#
+curl --resolve service.baipiao.eu.org:443:$testip https://service.baipiao.eu.org -o temp.txt -#
 domain=$(grep domain= temp.txt | cut -f 2- -d'=')
 file=$(grep file= temp.txt | cut -f 2- -d'=')
 rm -rf temp.txt
