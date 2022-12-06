@@ -1,3 +1,6 @@
+# 用新的脚本了
+地址： https://github.com/524819297/openwrt_cf_passwall
+
 # 自动替换 PassWall 里面的 WS 节点地址 为 CF 优选的IP
 ## 新增微信推送 杀脚本命令 更新脚本20210106
 
