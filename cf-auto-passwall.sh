@@ -91,8 +91,8 @@ function bettercloudflareip() {
   /etc/init.d/passwall start
   sleep 9
   message="
-	passwall优选IP：$anycast 成功
-	优选IP $anycast 满足 $bandwidth Mbps带宽需求
+	passwall优选IP:【$anycast】成功
+	优选IP【$anycast】满足【$bandwidth】Mbps带宽需求
 	峰值速度 $max kB/s
 	实测带宽 $realbandwidth Mbps
 	数据中心 $colo
