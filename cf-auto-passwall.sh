@@ -1,5 +1,7 @@
 #!/bin/bash
 # better-cloudflare-ip
+#11\12行可修改
+#73\108\110行要修改
 
 function bettercloudflareip() {
   #  read -p "请设置期望的带宽大小(默认最小1,单位 Mbps):" bandwidth
@@ -68,24 +70,52 @@ function bettercloudflareip() {
   echo "数据中心 $colo"
   echo "总计用时 $(($endtime - $starttime)) 秒"
 
-  uci set passwall.035e73757f14446f8f4a9b63aff93299.address=$anycast
+  uci set passwall.xxxxxxxxxxxxxxxxxxxxxx.address=$anycast
   uci commit passwall
-  curl -s -0 /dev/null http://www.pushplus.plus/send \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "token": "token",
-        "title": "'"passwall优选IP：$anycast 成功"'",
-        "content": "'"优选IP $anycast 满足 $bandwidth Mbps带宽需求
-              峰值速度 $max kB/s
-              实测带宽 $realbandwidth Mbps
-              数据中心 $colo
-              总计用时 $((endtime - starttime)) 秒"'"
-        }' \
-    --header "Content-Type: application/json"
+  #curl -s -0 /dev/null http://www.pushplus.plus/send \
+  #  -H 'Content-Type: application/json' \
+  #  -d '{
+  #      "token": "token",
+  #      "title": "'"passwall优选IP：$anycast 成功"'",
+  #      "content": "'"优选IP $anycast 满足 $bandwidth Mbps带宽需求
+  #            峰值速度 $max kB/s
+  #            实测带宽 $realbandwidth Mbps
+  #            数据中心 $colo
+  #            总计用时 $((endtime - starttime)) 秒"'"
+  #      }' \
+  #  --header "Content-Type: application/json"
 
   sleep 1
-  /etc/init.d/haproxy start
+  echo "启动passwall"
+  #/etc/init.d/haproxy start
   /etc/init.d/passwall start
+  sleep 9
+  message="
+	passwall优选IP：$anycast 成功
+	优选IP $anycast 满足 $bandwidth Mbps带宽需求
+	峰值速度 $max kB/s
+	实测带宽 $realbandwidth Mbps
+	数据中心 $colo
+	总计用时 $((endtime - starttime)) 秒"
+  echo "准备发送telgram消息："
+  echo $message
+  send_telegram_message "$message"
+  echo "完成发送telgram消息。" 
+}
+
+function send_telegram_message() {
+  # Telegram bot token
+  local token="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  # Telegram chat id
+  local chat_id="xxxxxxxxxxxxxxxxxx"
+  # Message to send
+  local message="$1"
+
+  # Send message via Telegram Bot API
+  curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+    -d "chat_id=$chat_id" \
+    -d "text=$message" \
+    -d "parse_mode=Markdown"
 }
 
 function rtthttps() {
@@ -402,7 +432,16 @@ url=$(sed -n '1p' url.txt)
 domain=$(echo $url | cut -f 1 -d'/')
 file=$(echo $url | cut -f 2- -d'/')
 
-while true; do
+green(){
+    echo -e "\033[32m\033[01m$1\033[0m"
+}
+
+red(){
+    echo -e "\033[31m\033[01m$1\033[0m"
+}
+
+while true 
+do
   #  echo "1. IPV4优选(TLS)"
   #  echo "2. IPV4优选"
   #  echo "3. IPV6优选(TLS)"
@@ -414,10 +453,10 @@ while true; do
   #  echo -e "0. 退出\n"
   #  read -p "请选择菜单(默认0): " menu
   clear
-  red "脚本源 badafans 地址 https://github.com/badafans/better-cloudflare-ip"
-  echo 需要先清空缓存然后进行IPV4优选，请修改menu=0,ipv6请自行修改menu等参数
-  green "=================脚本正在运行中.....======================="
-  /etc/init.d/haproxy stop
+	red "脚本源 badafans 地址 https://github.com/badafans/better-cloudflare-ip"
+	echo 需要先清空缓存然后进行IPV4优选，请修改menu=0,ipv6请自行修改menu等参数
+	green "=================脚本正在运行中.....======================="
+  #/etc/init.d/haproxy stop
   /etc/init.d/passwall stop
   sleep 8
   menu=1
