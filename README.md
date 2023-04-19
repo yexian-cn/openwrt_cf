@@ -1,3 +1,8 @@
+# 修改点
+11\12行参数可修改
+
+73\108\110行要修改为自己的参数：passwall.node.id\telrobot_token\chat_id
+
 # 用新的脚本了
 地址： https://github.com/524819297/openwrt_cf_passwall
 
