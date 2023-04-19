@@ -97,10 +97,10 @@ function bettercloudflareip() {
 	实测带宽 $realbandwidth Mbps
 	数据中心 $colo
 	总计用时 $((endtime - starttime)) 秒"
-  echo "准备发送telgram消息："
+  echo "准备发送telegram消息："
   echo $message
   send_telegram_message "$message"
-  echo "完成发送telgram消息。" 
+  echo "完成发送telegram消息。" 
 }
 
 function send_telegram_message() {
