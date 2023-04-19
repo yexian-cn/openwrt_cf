@@ -95,6 +95,7 @@ function bettercloudflareip() {
 	优选IP【$anycast】满足【$bandwidth】Mbps带宽需求
 	峰值速度 $max kB/s
 	实测带宽 $realbandwidth Mbps
+	往返延迟 $avgms 毫秒
 	数据中心 $colo
 	总计用时 $((endtime - starttime)) 秒"
   echo "准备发送telegram消息："
